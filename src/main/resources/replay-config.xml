@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:axon="http://www.axonframework.org/schema/core"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.axonframework.org/schema/core http://www.axonframework.org/schema/axon-core.xsd">
+
+    <!-- Define an event bus -->
+    <axon:event-bus/>
+
+    <!-- Enable annotation support to automatically register @EventHandler annotated beans -->
+    <axon:annotation-config/>
+
+    <!-- Create a cluster -->
+    <axon:cluster id="cluster" default="true">
+        <!-- Enable replaying on this cluster by adding replay configuration -->
+        <axon:replay-config incoming-messages="backlog" event-store="eventStore" />
+        <!-- Here, we define which handlers we want to be part of this cluster -->
+    </axon:cluster>
+
+    <!-- We need a thread pool to execute the replay asynchronously-->
+    <bean id="asyncExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolExecutorFactoryBean">
+        <property name="corePoolSize" value="1"/>
+        <property name="waitForTasksToCompleteOnShutdown" value="true"/>
+    </bean>
+
+    <!-- We use a stub event store for simplicity -->
+    <bean id="eventStore" class="org.axonframework.quickstart.RunEventReplay$StubEventStore"/>
+
+    <!-- And we define our event listener beans -->
+    <bean class="org.axonframework.quickstart.RunEventReplay$ThreadPrintingEventListener"/>
+    <bean class="org.axonframework.quickstart.RunEventReplay$AnotherThreadPrintingEventListener"/>
+
+</beans>
