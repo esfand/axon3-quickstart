@@ -34,6 +34,7 @@
         </dependency>
 
         <!--Spring dependencies, for spring samples required. -->
+        <!--
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
@@ -44,6 +45,7 @@
             <artifactId>spring-tx</artifactId>
             <version>4.1.3.RELEASE</version>
         </dependency>
+        -->
         <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
